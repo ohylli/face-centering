@@ -1,0 +1,110 @@
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff;
+  --fg: #1a1a1a;
+  --muted: #555;
+  --accent: #0b5cad;
+  --border: #888;
+  --focus: #d4351c;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #121212;
+    --fg: #f2f2f2;
+    --muted: #bbb;
+    --accent: #7fb6ff;
+    --border: #777;
+    --focus: #ffbf47;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font: 1.125rem/1.5 system-ui, sans-serif;
+}
+
+main {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+h1 { margin-top: 0.5rem; }
+
+button, select, input {
+  font: inherit;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--accent);
+  border-radius: 0.4rem;
+  background: var(--accent);
+  color: var(--bg);
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.announcer {
+  min-height: 2.5em;
+  font-size: 1.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.5rem;
+  border-left: 0.4rem solid var(--accent);
+}
+
+.field label { margin: 0 0.5rem 0 0; }
+
+fieldset {
+  border: 1px solid var(--border);
+  border-radius: 0.4rem;
+  margin: 0 0 1rem;
+}
+
+fieldset p { margin: 0.4rem 0; }
+
+input[type="radio"], input[type="checkbox"] {
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+
+.preview {
+  position: relative;
+  width: 100%;
+  background: #000;
+  border-radius: 0.4rem;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+}
+
+.preview video,
+.preview canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Selfie view, so the picture matches the spoken left and right. */
+.preview.mirrored video,
+.preview.mirrored canvas {
+  transform: scaleX(-1);
+}

@@ -1,0 +1,6 @@
+node_modules/
+.playwright-mcp/
+.claude/*
+!.claude/launch.json
+# Test photo is downloaded on demand (see README), not redistributed.
+test/fixtures/
