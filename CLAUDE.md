@@ -51,7 +51,13 @@ There is no build step and no framework: plain HTML, CSS and JavaScript ES modul
 
 ## Localization
 
-English only for now. Every user-facing string goes in `js/i18n/en.js`; never hard-code text in `main.js` or `index.html` logic. To add a language, add a file and register it in `js/i18n/index.js`.
+English (`en.js`) and Finnish (`fi.js`). The language follows the browser (`navigator.languages`) until the user picks one in Settings; the choice is saved and switches the page live, including `<html lang>` so NVDA changes voice.
+
+- Every user-facing string goes in `js/i18n/`; never hard-code text in `main.js`.
+- Page text in `index.html` is marked `data-i18n="key"` (a `ui` key). The English text stays in the HTML as a fallback, and `test/i18n.test.js` checks it matches `en.js`.
+- Change page text only through `setText` in `main.js`: it skips text that is already right and edits the text node in place. Replacing a `<label>`'s text node makes NVDA read the label twice ("radio button checked Speech and sounds Speech and sounds").
+- To add a language, copy `en.js`, translate it, register it in `js/i18n/index.js`, and add an option (with its own `lang`) to the Language select. The tests check that every locale has the same keys.
+- Finnish speech: "vähän" / plain / "paljon" + "vasemmalla", "oikealla", "ylhäällä", "alhaalla"; distance "lähellä" / "kaukana"; "keskellä"; "ei kasvoja".
 
 ## Testing
 

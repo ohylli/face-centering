@@ -27,6 +27,7 @@ All settings are remembered in this browser.
 - **Delay before speaking:** how long a position must hold before it is spoken. This avoids chatter while you move.
 - **New position:** whether a new position interrupts speech (`aria-live="assertive"`) or waits for it to finish (`polite`).
 - **Volume** and **blip speed**, plus an optional soft tick while centered.
+- **Language:** English or Finnish (suomi). It follows the browser's language until you pick one.
 - **Camera:** choose the camera. The camera in use is shown and announced.
 - **Swap left and right:** only needed for cameras that already mirror their image.
 
@@ -47,7 +48,7 @@ The project uses plain HTML, CSS and JavaScript ES modules. There is no framewor
 
 - `js/position.js`: face box to per-axis levels, with hysteresis (pure, unit tested).
 - `js/settle.js`: reports a state only after it holds steady (pure, unit tested).
-- `js/i18n/`: all user-facing text. To add a language, copy `en.js`, translate it, and register the copy in `index.js`. The `describe()` function owns word order.
+- `js/i18n/`: all user-facing text, in English and Finnish. Page text in `index.html` is marked with `data-i18n`. To add a language, copy `en.js`, translate it, register the copy in `index.js`, and add it to the Language select. The `describe()` function owns word order.
 - `js/audio.js`: Web Audio blips, chime and lost tone.
 - `js/camera.js`, `js/detector.js`, `js/main.js`: camera, MediaPipe and UI wiring.
 

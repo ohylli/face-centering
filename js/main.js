@@ -4,10 +4,11 @@ import { createAudio } from './audio.js';
 import { createCamera } from './camera.js';
 import { createDetector } from './detector.js';
 import { loadSettings, saveSettings, DEFAULTS } from './settings.js';
-import { getLocale } from './i18n/index.js';
+import { getLocale, matchLanguage } from './i18n/index.js';
 
-const t = getLocale(document.documentElement.lang);
 const settings = loadSettings();
+const browserLanguages = navigator.languages?.length ? navigator.languages : [navigator.language];
+let t = getLocale(settings.language || matchLanguage(browserLanguages));
 const $ = (id) => document.getElementById(id);
 
 const els = {
@@ -16,6 +17,7 @@ const els = {
   announcer: $('announcer'),
   camera: $('camera'),
   cameraLabel: $('camera-label'),
+  language: $('language'),
   preview: $('preview'),
   video: $('video'),
   overlay: $('overlay'),
@@ -32,6 +34,7 @@ let box = null; // smoothed face box in video pixels
 let lastLevels = null; // kept across short dropouts for hysteresis
 let current = null; // levels for this frame, or null if no face
 let quietUntil = 0; // hold position speech so status messages are heard
+let cameraRawLabel = ''; // device label of the open camera, '' if unnamed
 
 const speechSettler = createSettler({ settleMs: settings.speechDelay, noFaceSettleMs: 800 });
 const audioSettler = createSettler({ settleMs: 120, noFaceSettleMs: 500 });
@@ -178,6 +181,7 @@ async function openCamera(deviceId) {
   settings.cameraId = cam.deviceId;
   saveSettings(settings);
   await populateCameras();
+  cameraRawLabel = cam.label;
   const label = cameraName(cam.label);
   els.cameraLabel.textContent = label;
   return label;
@@ -272,6 +276,33 @@ navigator.mediaDevices?.addEventListener('devicechange', () => {
   populateCameras();
 });
 
+// ---------- Language ----------
+
+/**
+ * Change an element's text without replacing its text node, and not at all
+ * if it is already right. Replacing the text node of a <label> makes NVDA
+ * read the label text a second time after the control.
+ */
+function setText(el, text) {
+  if (el.textContent === text) return;
+  const node = el.firstChild;
+  if (node && node.nodeType === Node.TEXT_NODE && !node.nextSibling) node.data = text;
+  else el.textContent = text;
+}
+
+/** Put the current locale's text into the page. Safe to call while running. */
+function applyLocale() {
+  if (document.documentElement.lang !== t.lang) document.documentElement.lang = t.lang;
+  for (const el of document.querySelectorAll('[data-i18n]')) {
+    const key = el === els.start && running ? 'stop' : el.dataset.i18n;
+    setText(el, t.ui[key]);
+  }
+  document.querySelector('meta[name="description"]')?.setAttribute('content', t.ui.description);
+  setText(els.cameraLabel, running ? cameraName(cameraRawLabel) : t.status.inUseNone);
+  els.language.value = t.lang;
+  populateCameras();
+}
+
 // ---------- Settings UI ----------
 
 function applySettings() {
@@ -304,6 +335,12 @@ function bind() {
     el.checked = !!settings[id];
     el.addEventListener('change', () => update({ [id]: el.checked }));
   }
+  els.language.addEventListener('change', () => {
+    update({ language: els.language.value });
+    t = getLocale(settings.language);
+    applyLocale();
+  });
+
   const vol = $('volume');
   vol.value = String(Math.round(settings.volume * 100));
   vol.addEventListener('input', () => update({ volume: Number(vol.value) / 100 }));
@@ -348,9 +385,9 @@ function update(patch) {
   applySettings();
 }
 
+applyLocale();
 bind();
 applySettings();
-populateCameras();
 
 // Hook for automated tests; harmless otherwise.
 window.__faceCentering = {

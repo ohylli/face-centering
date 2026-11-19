@@ -3,35 +3,36 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Face Centering</title>
+  <title data-i18n="title">Face Centering</title>
   <meta name="description" content="Tells you by speech and sound whether your face is centered in your webcam.">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Ccircle cx=%228%22 cy=%228%22 r=%226%22 fill=%22none%22 stroke=%22%230b5cad%22 stroke-width=%222%22/%3E%3Ccircle cx=%228%22 cy=%228%22 r=%221.5%22 fill=%22%230b5cad%22/%3E%3C/svg%3E">
   <link rel="stylesheet" href="css/style.css">
   <script type="module" src="js/main.js"></script>
 </head>
 <body>
+<!-- Text marked data-i18n is replaced from js/i18n/ at load. The English here is a fallback. -->
 <main>
-  <h1>Face Centering</h1>
+  <h1 data-i18n="title">Face Centering</h1>
 
   <div class="actions">
-    <button type="button" id="start">Start</button>
-    <button type="button" id="where">Where am I</button>
+    <button type="button" id="start" data-i18n="start">Start</button>
+    <button type="button" id="where" data-i18n="where">Where am I</button>
   </div>
 
   <p id="announcer" class="announcer" aria-live="assertive" aria-atomic="true"></p>
 
   <section aria-labelledby="camera-heading">
-    <h2 id="camera-heading">Camera</h2>
+    <h2 id="camera-heading" data-i18n="cameraHeading">Camera</h2>
     <p class="field">
-      <label for="camera">Camera</label>
+      <label for="camera" data-i18n="camera">Camera</label>
       <select id="camera">
         <option value="">None, press Start</option>
       </select>
     </p>
-    <p>In use: <span id="camera-label">none</span></p>
+    <p><span data-i18n="inUse">In use:</span> <span id="camera-label">none</span></p>
     <p class="field">
       <input type="checkbox" id="swapLeftRight">
-      <label for="swapLeftRight">Swap left and right (only if left and right come out reversed)</label>
+      <label for="swapLeftRight" data-i18n="swapLeftRight">Swap left and right (only if left and right come out reversed)</label>
     </p>
     <div id="preview" class="preview mirrored" aria-hidden="true">
       <video id="video" muted playsinline></video>
@@ -40,91 +41,99 @@
   </section>
 
   <section aria-labelledby="settings-heading">
-    <h2 id="settings-heading">Settings</h2>
+    <h2 id="settings-heading" data-i18n="settingsHeading">Settings</h2>
+
+    <p class="field">
+      <label for="language" data-i18n="language">Language</label>
+      <select id="language">
+        <option value="en" lang="en">English</option>
+        <option value="fi" lang="fi">suomi</option>
+      </select>
+    </p>
 
     <fieldset>
-      <legend>Feedback</legend>
-      <p><input type="radio" name="output" id="output-both" value="both"><label for="output-both">Speech and sounds</label></p>
-      <p><input type="radio" name="output" id="output-speech" value="speech"><label for="output-speech">Speech only</label></p>
-      <p><input type="radio" name="output" id="output-sound" value="sound"><label for="output-sound">Sounds only</label></p>
+      <legend data-i18n="feedback">Feedback</legend>
+      <p><input type="radio" name="output" id="output-both" value="both"><label for="output-both" data-i18n="outputBoth">Speech and sounds</label></p>
+      <p><input type="radio" name="output" id="output-speech" value="speech"><label for="output-speech" data-i18n="outputSpeech">Speech only</label></p>
+      <p><input type="radio" name="output" id="output-sound" value="sound"><label for="output-sound" data-i18n="outputSound">Sounds only</label></p>
     </fieldset>
 
     <fieldset>
-      <legend>Position</legend>
+      <legend data-i18n="position">Position</legend>
       <p class="field">
-        <label for="tolerance">Centered zone</label>
+        <label for="tolerance" data-i18n="tolerance">Centered zone</label>
         <select id="tolerance">
-          <option value="tight">Small</option>
-          <option value="normal">Medium</option>
-          <option value="loose">Large</option>
+          <option value="tight" data-i18n="toleranceTight">Small</option>
+          <option value="normal" data-i18n="toleranceNormal">Medium</option>
+          <option value="loose" data-i18n="toleranceLoose">Large</option>
         </select>
       </p>
       <p class="field">
         <input type="checkbox" id="distance">
-        <label for="distance">Distance feedback (close, distant)</label>
+        <label for="distance" data-i18n="distance">Distance feedback (close, distant)</label>
       </p>
       <p class="actions">
-        <button type="button" id="set-ideal">Set current distance as ideal</button>
-        <button type="button" id="reset-ideal">Reset ideal distance</button>
+        <button type="button" id="set-ideal" data-i18n="setIdeal">Set current distance as ideal</button>
+        <button type="button" id="reset-ideal" data-i18n="resetIdeal">Reset ideal distance</button>
       </p>
     </fieldset>
 
     <fieldset>
-      <legend>Speech</legend>
+      <legend data-i18n="speech">Speech</legend>
       <p class="field">
-        <label for="speechDelay">Delay before speaking</label>
+        <label for="speechDelay" data-i18n="speechDelay">Delay before speaking</label>
         <select id="speechDelay">
-          <option value="200">Short</option>
-          <option value="400">Medium</option>
-          <option value="800">Long</option>
+          <option value="200" data-i18n="delayShort">Short</option>
+          <option value="400" data-i18n="delayMedium">Medium</option>
+          <option value="800" data-i18n="delayLong">Long</option>
         </select>
       </p>
       <p class="field">
-        <label for="liveMode">New position</label>
+        <label for="liveMode" data-i18n="liveMode">New position</label>
         <select id="liveMode">
-          <option value="assertive">Interrupts speech</option>
-          <option value="polite">Waits for speech to finish</option>
+          <option value="assertive" data-i18n="liveAssertive">Interrupts speech</option>
+          <option value="polite" data-i18n="livePolite">Waits for speech to finish</option>
         </select>
       </p>
     </fieldset>
 
     <fieldset>
-      <legend>Sounds</legend>
+      <legend data-i18n="sounds">Sounds</legend>
       <p class="field">
-        <label for="volume">Volume</label>
+        <label for="volume" data-i18n="volume">Volume</label>
         <input type="range" id="volume" min="0" max="100" step="10">
       </p>
       <p class="field">
-        <label for="blipInterval">Blip speed</label>
+        <label for="blipInterval" data-i18n="blipInterval">Blip speed</label>
         <select id="blipInterval">
-          <option value="500">Slow</option>
-          <option value="300">Medium</option>
-          <option value="180">Fast</option>
+          <option value="500" data-i18n="blipSlow">Slow</option>
+          <option value="300" data-i18n="blipMedium">Medium</option>
+          <option value="180" data-i18n="blipFast">Fast</option>
         </select>
       </p>
       <p class="field">
         <input type="checkbox" id="centeredTick">
-        <label for="centeredTick">Soft tick while centered</label>
+        <label for="centeredTick" data-i18n="centeredTick">Soft tick while centered</label>
       </p>
       <p class="actions">
-        <button type="button" data-preview="off">Play blip</button>
-        <button type="button" data-preview="centered">Play centered sound</button>
-        <button type="button" data-preview="none">Play face lost sound</button>
+        <button type="button" data-preview="off" data-i18n="previewOff">Play blip</button>
+        <button type="button" data-preview="centered" data-i18n="previewCentered">Play centered sound</button>
+        <button type="button" data-preview="none" data-i18n="previewNone">Play face lost sound</button>
       </p>
     </fieldset>
   </section>
 
   <section aria-labelledby="help-heading">
-    <h2 id="help-heading">Help</h2>
-    <p>Press Start and allow camera access. Directions are from your own point of view.</p>
+    <h2 id="help-heading" data-i18n="helpHeading">Help</h2>
+    <p data-i18n="helpIntro">Press Start and allow camera access. Directions are from your own point of view.</p>
     <ul>
-      <li>Speech: left or right first, then up or down, then distance. Each can be "a little", plain, or "far". "Centered" means all good.</li>
-      <li>Sounds: blips pan left or right with your face, and go higher when your face is high, lower when it is low. Blips stop and a rising chime plays when you are centered. A falling tone means the face was lost.</li>
-      <li>Distance: if blips keep playing in the middle while you are centered, you are too close or too distant. Sit where you want to be and press "Set current distance as ideal".</li>
-      <li>Shortcuts: Alt+Shift+W says where you are. Alt+Shift+S starts or stops.</li>
-      <li>Privacy: everything runs in your browser. Video never leaves your computer.</li>
+      <li data-i18n="helpSpeech">Speech: left or right first, then up or down, then distance. Each can be "a little", plain, or "far". "Centered" means all good.</li>
+      <li data-i18n="helpSounds">Sounds: blips pan left or right with your face, and go higher when your face is high, lower when it is low. Blips stop and a rising chime plays when you are centered. A falling tone means the face was lost.</li>
+      <li data-i18n="helpDistance">Distance: if blips keep playing in the middle while you are centered, you are too close or too distant. Sit where you want to be and press "Set current distance as ideal".</li>
+      <li data-i18n="helpShortcuts">Shortcuts: Alt+Shift+W says where you are. Alt+Shift+S starts or stops.</li>
+      <li data-i18n="helpPrivacy">Privacy: everything runs in your browser. Video never leaves your computer.</li>
     </ul>
-    <p><a href="https://github.com/ohylli/face-centering">Source code and instructions on GitHub</a></p>
+    <p><a href="https://github.com/ohylli/face-centering" data-i18n="helpSource">Source code and instructions on GitHub</a></p>
   </section>
 </main>
 </body>

@@ -14,6 +14,7 @@ export const DEFAULTS = {
   centeredTick: false,
   swapLeftRight: false,
   cameraId: '',
+  language: '', // '' = follow the browser's language
 };
 
 export function loadSettings() {
